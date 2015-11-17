@@ -1,0 +1,22 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+<input id="J_Url" type="text" placeholder="请输入地址">
+<input id="J_Submit" type="submit" value="查询">
+<img src="http://7rfkrn.com1.z0.glb.clouddn.com/princess_mononoke.jpg" alt="princess mononoke" />
+<img src="http://7rfkrn.com1.z0.glb.clouddn.com/hernamiqi.jpg" alt="" />
+<img src="http://7rfkrn.com1.z0.glb.clouddn.com/itachi2.jpg" alt="" />
+<img src="http://7rfkrn.com1.z0.glb.clouddn.com/itchi1.jpg" alt="" />
+
+<script type="text/javascript">
+	var buttonSearch = document.getElementById('J_Submit');
+	buttonSearch.addEventListener('click', function () {
+		var inputUrl = document.getElementById('J_Url').value;
+		var data = {
+			url: inputUrl
+		}
+		var request = new XMLHttpRequest();
+		request.open('POST', '/report', true)
+		request.setRequestHeader('Content-Type', 'application/json')
+		request.send(JSON.stringify(data))
+	}, false)
+</script>

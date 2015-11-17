@@ -1,10 +1,9 @@
 {
-  "name": "site2",
+  "name": "autoTiming",
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node test &&node ./bin/www",
-    "test": "webpack"
+    "start": "npm test && node ./bin/www"
   },
   "dependencies": {
     "body-parser": "~1.13.2",
@@ -15,6 +14,7 @@
     "ejs": "~2.3.3",
     "express": "~4.13.1",
     "express-session": "~1.9.1",
+    "hbs": "^4.0.0",
     "markdown": "0.5.0",
     "mongodb": "~1.4.15",
     "morgan": "~1.6.1",
