@@ -1,11 +1,11 @@
 var phantomas = require('phantomas');
 
 // var task2 = phantomas('http://market.showjoy.com/activity/ctopic/23929.html', function (err, json, results) {
-				// console.log([
-        //         'phantomas results',
-        //         json, // parsed JSON with raw results
-        //         results.getAsserts() // results object with metrics values, offenders, asserts data
-        // ]);
+// 				console.log([
+//                 'phantomas results',
+//                 json, // parsed JSON with raw results
+//                 results.getAsserts() // results object with metrics values, offenders, asserts data
+//         ]);
 // })
 
 // task2.on('results', function (results) {
@@ -16,7 +16,7 @@ var phantomas = require('phantomas');
 // 		]);
 // })
 var domComplete = 0;
-var task = phantomas('http://market.showjoy.com/activity/ctopic/23929.html', function (err, json, results) {
+var task = phantomas('http://showjoy.com', function (err, json, results) {
 			// console.log([
 			//         'phantomas results',
 			//         json, // parsed JSON with raw results
@@ -24,7 +24,7 @@ var task = phantomas('http://market.showjoy.com/activity/ctopic/23929.html', fun
 			// ]);
 })
 task.on('results', function (results) {
-	domComplete = parseInt(results.getMetrics().domComplete);
+	domComplete = results.getMetrics();
 	console.log(domComplete);
 })
 	

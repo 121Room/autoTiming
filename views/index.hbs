@@ -1,22 +1,42 @@
+<style type="text/css">
+	.result {
+		width: 300px;
+		height: 300px;
+		text-align: center;
+		line-height: 300px;
+		background-color: red;
+	}
+</style>
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
-<input id="J_Url" type="text" placeholder="请输入地址">
-<input id="J_Submit" type="submit" value="查询">
-<img src="http://7rfkrn.com1.z0.glb.clouddn.com/princess_mononoke.jpg" alt="princess mononoke" />
-<img src="http://7rfkrn.com1.z0.glb.clouddn.com/hernamiqi.jpg" alt="" />
-<img src="http://7rfkrn.com1.z0.glb.clouddn.com/itachi2.jpg" alt="" />
-<img src="http://7rfkrn.com1.z0.glb.clouddn.com/itchi1.jpg" alt="" />
-
+<input class="j_Url" type="text" placeholder="请输入地址">
+<input class="j_Submit" type="submit" value="查询">
+<div class="j_results result">
+	
+</div>
 <script type="text/javascript">
-	var buttonSearch = document.getElementById('J_Submit');
-	buttonSearch.addEventListener('click', function () {
-		var inputUrl = document.getElementById('J_Url').value;
+	var $buttonSearch = $('.j_Submit');
+	var $inputUrl = $('.j_Url');
+	var $boxResult = $('.j_results');
+	var canClick = true;
+	$buttonSearch.on('click', function () {
+		var valUrl = $inputUrl.val();
 		var data = {
-			url: inputUrl
+			url: valUrl
 		}
-		var request = new XMLHttpRequest();
-		request.open('POST', '/report', true)
-		request.setRequestHeader('Content-Type', 'application/json')
-		request.send(JSON.stringify(data))
-	}, false)
+		if (canClick) {
+			canClick = false;
+			$.ajax({
+				dataType: 'json',
+				url: '/report',
+				type: 'POST',
+				data: data,
+				success: function (data) {
+					console.log(data);
+					$boxResult.html(JSON.stringify(data));
+					canClick = true;
+				}
+			})
+		}
+	})
 </script>
