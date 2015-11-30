@@ -13,42 +13,46 @@ module.exports = function (app) {
 	});
 	app.post('/report', function (req, res) {
 		var url = req.body.url;
+    var urlArr = url.split(',');
 		var isSuccess = false;
 		var objTimeCollection = null;
 
-        phantom.create(function (ph) {
-            function openAgain() {
-                ph.createPage(function (page) {
-                    var t = new Date().getTime();
-                    var tDomCompleteTime = 0;
-                    page.open(url, function (status) {
-                        function checkReadyState() {
-                            setTimeout(function () {
-                                page.evaluate(function () {
-                                    return document.readyState;
-                                }, function (readyState) {
-                                    if (readyState === 'complete') {
-                                        console.log(readyState);
-                                        tDomCompleteTime = new Date().getTime() - t;
-                                        isSuccess = true;
-                                        res.json({
-                                            "isSuccess": isSuccess,
-                                            "domCompleteTime": tDomCompleteTime
-                                        })
-                                        ph.exit();
-                                    } else {
-                                        checkReadyState();
-                                    }
-                                })
-                                
+    phantom.create(function (ph) {
+        function openAgain(url) {
+            ph.createPage(function (page) {
+                var t = new Date().getTime();
+                var tDomCompleteTime = 0;
+                page.open(url, function (status) {
+                    function checkReadyState() {
+                        setTimeout(function () {
+                            page.evaluate(function () {
+                                return document.readyState;
+                            }, function (readyState) {
+                                if (readyState === 'complete') {
+                                    console.log(readyState);
+                                    tDomCompleteTime = new Date().getTime() - t;
+                                    isSuccess = true;
+                                    console.log(url + ": " + tDomCompleteTime);
+                                    // res.json({
+                                    //     "isSuccess": isSuccess,
+                                    //     "domCompleteTime": tDomCompleteTime
+                                    // })
+                                    // ph.exit();
+                                } else {
+                                    checkReadyState();
+                                }
                             })
-                        };
-                        checkReadyState();
-                    });
+                            
+                        })
+                    };
+                    checkReadyState();
                 });
-            }
-            openAgain();
-        });
+            });
+        }
+        for (var i = 0; i < urlArr.length; i++) {
+          openAgain(urlArr[i]);
+        };
+    });
 	})
 	app.get('/getTime', function (req, res) {
 		res.render('getTime', {
