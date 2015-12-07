@@ -1,13 +1,15 @@
 var mongodb = require('./db');
 
 
-function Time(time) {
+function Time(url, time) {
 	this.domComplete = time.domComplete;
+	this.url = url;
 }
 
 module.exports = Time;
 
 Time.prototype.save = function (callback) {
+	var self = this;
 	var date = new Date();
 	//存储各种事件格式，方便以后拓展
 	var clientTime = {
@@ -20,7 +22,8 @@ Time.prototype.save = function (callback) {
 	//要存入数据库的时间
 	var time = {
 		clientTime: clientTime,
-		domComplete: this.domComplete
+		domComplete: self.domComplete,
+		url: self.url
 	}
 	//打开数据库
 	mongodb.open(function (err, db) {

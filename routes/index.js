@@ -4,6 +4,7 @@ var crypto = require('crypto');
 // var phantomas = require('phantomas');
 var phantom = require('phantom');
 var Promise = require('es6-promise').Promise;
+var Timing  = require('../models/timing.js');
 
 module.exports = function (app) {
 	app.get('/', function (req, res) {
@@ -22,6 +23,7 @@ module.exports = function (app) {
             ph.createPage(function (page) {
                 var t = new Date().getTime();
                 var tDomCompleteTime = 0;
+                var objTime = {};
                 page.open(url, function (status) {
                     function checkReadyState() {
                         setTimeout(function () {
@@ -33,6 +35,11 @@ module.exports = function (app) {
                                     tDomCompleteTime = new Date().getTime() - t;
                                     isSuccess = true;
                                     console.log(url + ": " + tDomCompleteTime);
+                                    objTime.domComplete = tDomCompleteTime;
+                                    var timing = new Timing(url, objTime);
+                                    timing.save(function () {
+                                        console.log(url + ": " + tDomCompleteTime)
+                                    })
                                     // res.json({
                                     //     "isSuccess": isSuccess,
                                     //     "domCompleteTime": tDomCompleteTime
