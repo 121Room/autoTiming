@@ -1,5 +1,21 @@
-var mongodb = require('./db');
-
+var Db = require('./db');
+var poolModule = require('generic-pool');
+var pool = poolModule.Pool({
+  name     : 'mongoPool',
+  create   : function(callback) {
+    var mongodb = Db();
+    mongodb.open(function (err, db) {
+      callback(err, db);
+    })
+  },
+  destroy  : function(mongodb) {
+    mongodb.close();
+  },
+  max      : 100,
+  min      : 5,
+  idleTimeoutMillis : 30000,
+  log      : true
+});
 
 function Time(url, time) {
 	this.domComplete = time.domComplete;
@@ -26,46 +42,48 @@ Time.prototype.save = function (callback) {
 		url: self.url
 	}
 	//打开数据库
-	mongodb.open(function (err, db) {
+	pool.acquire(function (err, db) {
 		if (err) {
 			return callback(err);
 		}
 		//读取times的集合
 		db.collection('times', function (err, collection) {
 			if (err) {
-				mongodb.close();
+				pool.release(db);
 				return callback(err);
 			}
 			collection.insert(time, {
 				safe: true
 			}, function (err, user) {
-				mongodb.close();
+				pool.release(db);
 				if (err) {
 					return callback(err);
 				}
-				callback(null, user[0]);
+				callback(null);
 			})
 		})
 	})
 }
-Time.getOne = function(name, callback) {
-	mongodb.open(function (err, db) {
+Time.getAll = function(url, callback) {
+	pool.acquire(function (err, db) {
 		if (err) {
 			return callback(err);
 		}
 		db.collection('times', function (err, collection) {
 			if (err) {
-				mongodb.close();
+				pool.release(db);
 				return callback(err);
 			}
-			collection.findOne({
-				"clientTime.minute": name
-			}, function (err, user) {
-				mongodb.close();
+			collection.find({
+				"url": url
+			}).sort({
+				time: 1
+			}).toArray(function (err, docs) {
+				pool.release(db);
 				if (err) {
 					return callback(err);
 				}
-				callback(null, user);
+				callback(null, docs)
 			})
 		})
 	})

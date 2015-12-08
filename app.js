@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var routes = require('./routes/index');
+var getTime = require('./fn/getTime');
 var users = require('./routes/users');
 var settings = require('./settings');
 var flash = require('connect-flash');
@@ -47,6 +48,7 @@ app.use(multer({
 
 //访问路由
 routes(app);
+getTime();
 app.use('/users', users);
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static('/public'));

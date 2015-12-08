@@ -1,0 +1,12 @@
+<h1>{{title}}</h1>
+<p>Welcome to {{title}}</p>
+{{#each url}}
+ <form action="/getTime" method="GET">
+ <input type="text" name="url" value="{{this}}">
+	<input type="submit" value="查看">
+</form>
+{{/each}}
+
+
+{{!-- <script type="text/javascript" src="/javascripts/index.js"></script> --}}
+{{!-- <script type="text/javascript" src="dist/assets/js/index.min.js"></script> --}}
