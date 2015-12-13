@@ -48,7 +48,7 @@ app.use(multer({
 
 //访问路由
 routes(app);
-getTime();
+// getTime();
 app.use('/users', users);
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static('/public'));

@@ -1,12 +1,10 @@
 var phantom = require('phantom');
 var Promise = require('es6-promise').Promise;
 var Timing  = require('../models/timing.js');
-var urlArr = require('../models/url.js');
+// var urlArr = require('../models/url.js');
 var TIMEINTERVAL = 1000*60*1;
-module.exports = function () {
-    setInterval(function () {
-        var isSuccess = false;
-        var objTimeCollection = null;
+module.exports = function (urlArr) {
+    // setInterval(function () {
 
         phantom.create(function (ph) {
             function openAgain(url) {
@@ -23,7 +21,6 @@ module.exports = function () {
                                     if (readyState === 'complete') {
                                         console.log(readyState);
                                         tDomCompleteTime = new Date().getTime() - t;
-                                        isSuccess = true;
                                         console.log(url + ": " + tDomCompleteTime);
                                         objTime.domComplete = tDomCompleteTime;
                                         
@@ -46,5 +43,5 @@ module.exports = function () {
               openAgain(urlArr[i]);
             };
         });
-    }, TIMEINTERVAL)
+    // }, TIMEINTERVAL)
 }

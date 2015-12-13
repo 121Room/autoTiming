@@ -1,10 +1,43 @@
-<h1>{{title}}</h1>
-<p>Welcome to {{title}}</p>
-<input class="j_Url" type="text" placeholder="请输入地址" value="http://www.showjoy.com">
-<input class="j_Submit" type="submit" value="查询">
-<div class="j_results result">
-	
+<h1>查阅单个地址的长时间性能监控</h1>
+{{#each urlArr}}
+	<form action="/getTime" method="GET">
+  	<input type="text" name="url" value="{{url}}" readonly="true">
+		<input type="submit" value="查看">
+	</form>
+{{/each}}
+</br>
+</br>
+</br>
+</br>
+<h1>地址管理</h1>
+<div class="j_UrlBox url-box">
+{{#each urlArr}}
+<div class="j_Url url-status">
+  <span class="j_ValueUrl url-value">{{url}}</span>
+  <input class="j_FixUrl" type="submit" value="修改">
+  <input class="j_DeleteUrl" type="submit" value="删除">
+</div>
+{{/each}}
 </div>
 
+<input class="j_AddUrl" type="submit" value="添加新的地址">
+
+<input class="j_CheckAll" type="submit" value="检测目前所有地址的单次性能">
+
+
+
+
+<script id="J_TempUrlEdit" type="text/html">
+	<div class="j_Url url-status">
+		<input class="url-input j_UrlInput" data-origin="\{{origin}}" type="text" value='\{{valueUrl}}' placeholder="请输入网址">
+		<input class="j_SaveUrl" type="submit" data-status='\{{status}}' value="保存">
+		<input class="j_Cancel" type="submit" data-status='\{{status}}' value="取消">	
+	</div>
+</script>
+<script id="J_TempUrlFix" type="text/html">
+	<span class="j_ValueUrl url-value">\{{valueUrl}}</span>
+	<input class="j_FixUrl" type="submit" value="修改">
+	<input class="j_DeleteUrl" type="submit" value="删除">
+</script>
 <script type="text/javascript" src="/javascripts/index.js"></script>
 {{!-- <script type="text/javascript" src="dist/assets/js/index.min.js"></script> --}}
