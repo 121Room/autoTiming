@@ -57,6 +57,11 @@ module.exports = function (app) {
     app.post('/api/checkAll', function (req, res) {
         var urlArrToString = req.body.url;
         var url = urlArrToString.split(',');
-        getTime(url);
+        getTime(url, function (arr) {
+            res.json({
+                isSuccess: true,
+                data: arr
+            })
+        });
     })
 }

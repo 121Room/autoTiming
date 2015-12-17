@@ -40,7 +40,7 @@
 	function ajaxCheckAll () {
 		var urlArr = [];
 		$(valueUrlClass).each(function(i, item) {
-			urlArr.push(item);
+			urlArr.push($(item).html());
 		})
 		var urlAllToString = '';
 		$.ajax({
@@ -99,9 +99,10 @@
 		// TODO mongodb
 	}
 	function deleteUrl () {
+		var valueUrl = $(this).siblings('.j_ValueUrl').html();
 		if (window.confirm('确认删除？')) {
 			$(this).parents('.j_Url').remove();	
-			ajaxDelUrl();
+			ajaxDelUrl(valueUrl);
 		}
 		
 	}

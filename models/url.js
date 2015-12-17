@@ -95,8 +95,6 @@ Url.del = function (url, callback) {
 			}
 			collection.remove({
 				"url": url
-			}, {
-				w: 1
 			}, function (err) {
 				pool.release(db);
 				if (err) {
