@@ -9,7 +9,24 @@
 </br>
 </br>
 </br>
+<h1>监控触发</h1>
+<hr>
+<h1>监控时间</h1>
+<select class="j_RunTimeSelect">
+	<option value="1800000">0.5小时</option>
+	<option value="3600000">1小时</option>
+	<option value="7200000">2小时</option>
+</select>
+<input type="submit" value="开始监控">
+<input type="submit" value="结束监控">
+<span class="j_RemainTime"></span>
+
+</br>
+</br>
+</br>
+</br>
 <h1>地址管理</h1>
+<hr>
 <div class="j_UrlBox url-box">
 {{#each urlArr}}
 <div class="j_Url url-status">
@@ -20,11 +37,15 @@
 {{/each}}
 </div>
 
+
+
 <input class="j_AddUrl" type="submit" value="添加新的地址">
 
 <input class="j_CheckAll" type="submit" value="检测目前所有地址的单次性能">
 
-
+<div class="j_DataContent data-content">
+	
+</div>
 
 
 <script id="J_TempUrlEdit" type="text/html">
@@ -38,6 +59,15 @@
 	<span class="j_ValueUrl url-value">\{{valueUrl}}</span>
 	<input class="j_FixUrl" type="submit" value="修改">
 	<input class="j_DeleteUrl" type="submit" value="删除">
+</script>
+<script id="J_TempDataComplete" type="text/html">
+	\{{each data}}
+		<ul class="row">
+			<li class="col area-url">\{{$value.url}}</li>
+			<li class="col area-status">load时间:</li>
+			<li class="col area-data">\{{$value.domComplete}}</li>
+		</ul>
+	\{{/each}}
 </script>
 <script type="text/javascript" src="/javascripts/index.js"></script>
 {{!-- <script type="text/javascript" src="dist/assets/js/index.min.js"></script> --}}

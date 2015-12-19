@@ -1,10 +1,11 @@
 var phantom = require('phantom');
+
+// 监控第三方
 var Promise = require('es6-promise').Promise;
 var Timing  = require('../models/timing.js');
 // var urlArr = require('../models/url.js');
 var TIMEINTERVAL = 1000*60*1;
 module.exports = function (urlArr, callback) {
-    // setInterval(function () {
         phantom.create(function (ph) {
             var index = 0;
             var objArr = [];
@@ -48,6 +49,7 @@ module.exports = function (urlArr, callback) {
                             })
                         };
                         checkReadyState();
+
                     });
                 });
             }
@@ -55,5 +57,8 @@ module.exports = function (urlArr, callback) {
               openAgain(urlArr[i]);
             };
         });
-    // }, TIMEINTERVAL)
+
+    
+
+
 }

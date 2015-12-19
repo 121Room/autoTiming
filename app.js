@@ -15,6 +15,9 @@ var flash = require('connect-flash');
 var multer = require('multer');
 var app = express();
 
+// TEST
+// var test2 = require('./test2');
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -48,7 +51,13 @@ app.use(multer({
 
 //访问路由
 routes(app);
-autoTiming();
+
+// 自动跑页面性能
+// autoTiming();
+
+// test
+// test2();
+
 app.use('/users', users);
 app.use(express.static(path.join(__dirname, 'public')));
 // app.use(express.static('/public'));

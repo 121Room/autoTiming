@@ -3,6 +3,8 @@
 	var $addUrl = $('.j_AddUrl');
 	var $urlBox = $('.j_UrlBox');
 	var $checkAll = $('.j_CheckAll');
+	var $dataContent = $('.j_DataContent');
+	var $runTimeSelect = $('.j_RunTimeSelect');
 
 	var saveUrlClass = '.j_SaveUrl';
 	var cancelUrlClass = '.j_Cancel';
@@ -32,8 +34,7 @@
 				url: url
 			},
 			success: function (data) {
-				// todo
-				
+				Bass.reload();
 			}
 		})
 	}
@@ -51,8 +52,8 @@
 				url: urlArr.toString()
 			},
 			success: function (data) {
-				// todo
-				
+				var html = template('J_TempDataComplete', data);
+				$dataContent.append(html);
 			}
 		})
 	}
