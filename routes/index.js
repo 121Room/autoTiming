@@ -1,13 +1,11 @@
 var express = require('express');
 var router = express.Router();
 var crypto = require('crypto');
-// var phantomas = require('phantomas');
-// var phantom = require('phantom');
-// var Promise = require('es6-promise').Promise;
 var Timing  = require('../models/timing.js');
 var Url  = require('../models/url.js');
+var autoTiming = require('../fn/autoTiming');
 var getTime = require('../fn/getTime.js');
-
+var getInfo = require('../fn/getInfo.js');
 //test
 var urlArr = ['http://www.baidu.com'];
 
@@ -63,5 +61,21 @@ module.exports = function (app) {
                 data: arr
             })
         });
+    })
+
+    app.post('/api/checkAllInfo', function (req, res) {
+        var urlArrToString = req.body.url;
+        var url = urlArrToString.split(',');
+        getInfo(url, function (arr) {
+            res.json({
+                isSuccess: true,
+                data: arr
+            })
+        });
+    })
+
+    app.post('/startWatch', function (req, res) {
+        var timeValue = req.body.timeValue;
+        autoTiming(timeValue);
     })
 }

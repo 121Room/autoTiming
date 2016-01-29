@@ -4,8 +4,9 @@ var Timing  = require('../models/timing.js');
 // var urlArr = require('../models/url.js');
 var Url     = require('../models/url.js');
 var TIMEINTERVAL = 1000*60*3;
-module.exports = function () {
-    setInterval(function () {
+module.exports = function (timeValue) {
+    var t = new Date().getTime();
+    var timer = setInterval(function () {
         Url.getAll(function (err, urlArr) {
             phantom.create(function (ph) {
                 function openAgain(url) {
@@ -44,5 +45,9 @@ module.exports = function () {
                 };
             });
         })
+        if (new Date().getTime() - t >= timeValue) {
+            clearInterval(timer);
+            console.log('timer closed');
+        }
     }, TIMEINTERVAL)
 }

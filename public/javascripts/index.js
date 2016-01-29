@@ -5,12 +5,26 @@
 	var $checkAll = $('.j_CheckAll');
 	var $dataContent = $('.j_DataContent');
 	var $runTimeSelect = $('.j_RunTimeSelect');
+	var $startWatch = $('.j_StartWatch');
+	var $endWatch = $('.j_EndWatch');
+	var $remainTime = $('.j_RemainTime');
+	var $watchForm = $('.j_WatchForm');
+	var $waitForContent = $('.j_WaitForContent');
+	var $checkAllInfo = $('.j_CheckAllInfo');
 
 	var saveUrlClass = '.j_SaveUrl';
 	var cancelUrlClass = '.j_Cancel';
 	var fixUrlClass = '.j_FixUrl';
 	var deleteUrlClass = '.j_DeleteUrl';
 	var valueUrlClass = '.j_ValueUrl';
+
+	function showLoading () {
+		$waitForContent.show();
+	}
+
+	function hideLoading () {
+		$waitForContent.hide();
+	}
 
 	function ajaxSaveUrl (url) {
 		$.ajax({
@@ -52,7 +66,28 @@
 				url: urlArr.toString()
 			},
 			success: function (data) {
+				hideLoading();
 				var html = template('J_TempDataComplete', data);
+				$dataContent.append(html);
+			}
+		})
+	}
+	function ajaxCheckAllInfo () {
+		var urlArr = [];
+		$(valueUrlClass).each(function(i, item) {
+			urlArr.push($(item).html());
+		})
+		var urlAllToString = '';
+		$.ajax({
+			dataType: 'json',
+			url: '/api/checkAllInfo',
+			type: 'post',
+			data: {
+				url: urlArr.toString()
+			},
+			success: function (data) {
+				hideLoading();
+				var html = template('J_TempDataInfo', data);
 				$dataContent.append(html);
 			}
 		})
@@ -107,15 +142,30 @@
 		}
 		
 	}
-
+	function startWatch () {
+		// var timeValue = $runTimeSelect.val();
+		$watchForm[0].action = $(this).data('action');
+		console.log($watchForm[0].action);
+		$watchForm.submit();
+	}
 
 
 	$addUrl.on('click', function () {
 		addUrlBox();
 	});
 	$checkAll.on('click', function () {
+		showLoading();
 		ajaxCheckAll();
 	})
+	$checkAllInfo.on('click', function () {
+		showLoading();
+		ajaxCheckAllInfo();
+	})
+	$startWatch.on('click', function () {
+		startWatch.call(this);
+	})
+
+
 	$body.on('click', saveUrlClass, function () {
 		saveUrl.call(this);
 	});
