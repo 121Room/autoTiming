@@ -1,0 +1,12 @@
+
+
+
+{{each list}}
+<p>
+	这个地址:{{$value.url}}，有{{$value.imageCount.length}}个图片超过了应有的尺寸。为：
+	{{each $value.imageCount}}
+		<p>{{$value}}</p>
+	{{/each}}
+</p> 
+</br>
+{{/each}}

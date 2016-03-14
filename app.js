@@ -9,6 +9,7 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var routes = require('./routes/index');
 var autoTiming = require('./fn/autoTiming');
+var autoImging = require('./fn/autoGettingImg.js');
 var users = require('./routes/users');
 var settings = require('./settings');
 var flash = require('connect-flash');
@@ -54,6 +55,9 @@ routes(app);
 
 // 自动跑页面性能
 // autoTiming();
+
+// 自动跑页面图片质量
+autoImging();
 
 // test
 // test2();

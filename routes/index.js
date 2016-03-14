@@ -5,7 +5,7 @@ var Timing  = require('../models/timing.js');
 var Url  = require('../models/url.js');
 var autoTiming = require('../fn/autoTiming');
 var getTime = require('../fn/getTime.js');
-var getInfo = require('../fn/getInfo.js');
+var getInfo = require('../fn/getImg.js');
 //test
 var urlArr = ['http://www.baidu.com'];
 

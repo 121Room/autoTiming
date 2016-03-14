@@ -1,12 +1,11 @@
 var phantomas = require('phantomas');
 
-// 监控第三方
-var Promise = require('es6-promise').Promise;
+var Promise   = require('es6-promise').Promise;
 
-var REG_URL = '//'
-var MAX_SIZE = 200;
-var index = 0;
-var objArr = [];
+
+//固定变量
+var REG_URL   = '//';
+var MAX_SIZE  = 200;
 
 
 function checkSize (arr) {
@@ -21,9 +20,14 @@ function checkSize (arr) {
 }
 
 module.exports = function (urlArr, callback) {
+
+    var index = 0;
+    var objArr = [];
+
     function checkLast () {
         return index === urlArr.length;
     }
+
     function openAgain(url) {
 
 		phantomas(url, function(err, json, results) {
