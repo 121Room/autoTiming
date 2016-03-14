@@ -32,7 +32,8 @@ var mailOptions = {
 //固定变量
 var REG_URL   = '//';
 var MAX_SIZE  = 200;
-var TIMEINTERVAL = 1000*60*60*6;
+// var TIMEINTERVAL = 1000*60*60*6;
+var TIMEINTERVAL = 1000*10;
 
 function checkSize (arr) {
     var arrResult = [];
@@ -56,7 +57,8 @@ function hasOverSize (arr) {
 
 module.exports = function () {
 	var timer = setInterval(function () {
-		Url.getAll(function (err, urlArr) {
+		// Url.getAll(function (err, urlArr) {
+			var urlArr = [{url: 'http://m.showjoy.com'},{url: 'http://www.showjoy.com'}];
 			var index = 0;
 		    var objArr = [];
 
@@ -95,7 +97,7 @@ module.exports = function () {
 		    for (var i = 0; i < urlArr.length; i++) {
 		        openAgain(urlArr[i].url);
 		    };
-		})
+		// })
 	}, TIMEINTERVAL);
 }
 
