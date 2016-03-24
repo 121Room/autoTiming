@@ -1,11 +1,11 @@
 var phantomas = require('phantomas'),
 	task      = null,
-	url       = 'http://www.w3cplus.com/';
+	url       = 'http://m.showjoy.com/';
 task = phantomas(url, function(err, json, results) {
   // err: exit code
   // json: parsed JSON with raw results
   // results: results object with metrics values, offenders, asserts data
-  console.log(json.offenders.imageCount);
+  console.log(json);
 });
 // var t = new Date().getTime();
 // task.on('milestone', function(milestone) {

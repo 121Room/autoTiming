@@ -21,19 +21,12 @@ var mailOptions = {
     html: '<b>Hello world ✔</b>' // html body
 };
 
-// var sendPwdReminder = transporter.templateSender({
-//     subject: '有图片尺寸超标啦 ✔',
-//     text: 'Hello, {{username}}, Your password is: {{ password }}',
-//     html: '<b>Hello, <strong>{{username}}</strong>, Your password is:\n<b>{{ password }}</b></p>'
-// }, {
-//     from: settingConfig.emailFrom,
-// });
 
 //固定变量
 var REG_URL   = '//';
-var MAX_SIZE  = 200;
-// var TIMEINTERVAL = 1000*60*60*6;
-var TIMEINTERVAL = 1000*10;
+var MAX_SIZE  = 10;
+var TIMEINTERVAL = 1000*60*60*6;
+// var TIMEINTERVAL = 1000*10;
 
 function checkSize (arr) {
     var arrResult = [];
@@ -56,9 +49,10 @@ function hasOverSize (arr) {
 }
 
 module.exports = function () {
-	var timer = setInterval(function () {
+	autoTimingTimer();
+	function autoTimingTimer () {
 		// Url.getAll(function (err, urlArr) {
-			var urlArr = [{url: 'http://m.showjoy.com'},{url: 'http://www.showjoy.com'}];
+			var urlArr = [{url: 'http://m.showjoy.com'}];
 			var index = 0;
 		    var objArr = [];
 
@@ -76,13 +70,12 @@ module.exports = function () {
 		                length: imagesLength,
 						imageCount: checkSize(imageCountArr)
 					});
+					console.log('images ' + imageCountArr)
 		            console.log('imagesLength ' + imagesLength);
 		            if (checkLast() && hasOverSize(objArr)) {
                         var data = {};
                         data.list = objArr;
-                        console.log(JSON.stringify(data));
                         var html = template('./views/email-img/html', data);
-                        console.log(html)
                         mailOptions.html = html;
 		                transporter.sendMail(mailOptions, function(error, info){
                             if(error){
@@ -91,6 +84,10 @@ module.exports = function () {
                                 console.log('Message sent: ' + info.response);
                             }
                         });
+		            } else {
+		            	if (checkLast()) {
+		            		console.log('you got wonderfull images!');
+		            	}
 		            }
 				});
 		    }
@@ -98,7 +95,8 @@ module.exports = function () {
 		        openAgain(urlArr[i].url);
 		    };
 		// })
-	}, TIMEINTERVAL);
+	}
+	var timer = setInterval(autoTimingTimer, TIMEINTERVAL);
 }
 
 

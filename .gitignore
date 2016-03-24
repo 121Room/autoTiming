@@ -12,3 +12,6 @@ jsconfig.json
 node_modules
 public/dist
 dist/report.js
+
+# Test
+test*.js
