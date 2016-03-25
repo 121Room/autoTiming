@@ -4,9 +4,9 @@ var utils = require('../util/utils.js');
 var fs = require('fs');
 var path = require('path');
 var request = require('request');
+var exec = require('child_process').exec;
 
-
-utils.createImgFile();
+// utils.createImgFile();
 var imgFileBasePath = utils.getImgFilePath();
 //static
 var static = {
@@ -54,18 +54,31 @@ function getImgValue (filename) {
   })
 }
 
+function removeImg () {
+  return new Promise(function (resolve, reject) {
+      exec('rm -r ' + imgFileBasePath, function (err, stdout, stderr) {
+        if (err) {
+          reject(new Error(err));
+        } else {
+          resolve();
+        }
+      });
+  })
+}
+
 // 处理html
 // 遍历图片得到size
 function handleHtml (content) {
   return new Promise(function (resolve, reject) {
+    utils.createImgFile();
     var imgArr = [];
     var index = 0;
     var imgUrlList = utils.getImgUrlist(content);
     function checkLast () {
       return index === imgUrlList.length;
     }
-    imgUrlList.forEach(function(item, index) {
-      index++;
+    imgUrlList.forEach(function(item, i) {
+      
       var filename = 'img' + parseInt(Math.random()*100000);
       getImg(item, filename)
       .then(function (i) {
@@ -75,6 +88,7 @@ function handleHtml (content) {
         console.log(error)
       })
       .then(function (size) {
+        index++;
         imgArr.push({
           url: item,
           size: size
@@ -83,8 +97,10 @@ function handleHtml (content) {
           resolve(imgArr);
         }
       })
+      .catch(function (error) {
+        console(error);
+      })
     })
-    // 
   })
 }
 
@@ -109,23 +125,35 @@ function autoGettingImg () {
           });
         })
       }
-      getUrlList().then(function (arrList) {
+      var urlInfo = [];
+      var index = 0;
 
+      getUrlList().then(function (arrList) {
+        function checkLast () {
+          return index === arrList.length;
+        }
         // url 数组遍历
-        arrList.forEach(function (item, index) {
+        arrList.forEach(function (item, i) {
           openPage(item)
           .then(function (content) {
 
             // 由url 得到的html Content 
             // 匹配图片地址
-            // 
             return handleHtml(content);
           })
           .catch(function (err) {
             console.log(err);
           })
           .then(function (imgArr) {
-            console.log(imgArr);
+            index++;
+            urlInfo.push({
+              url: item,
+              imgCount: imgArr
+            })
+            if (checkLast()) {
+              console.log(urlInfo);
+              return removeImg();
+            }
           })
         })
       })
@@ -134,6 +162,10 @@ function autoGettingImg () {
   loadOnce();
   setInterval(loadOnce, static.TIME_DIFF);
 }
-module.exports = autoGettingImg;
+
+// express test
+// module.exports = autoGettingImg;
+
+// node test
 autoGettingImg();
 
