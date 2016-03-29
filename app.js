@@ -9,13 +9,14 @@ var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 var routes = require('./routes/index');
 var autoTiming = require('./fn/autoTiming');
-// var autoImging = require('./fn/autoGettingImg.js');
-var autoImging = require('./fn/autoGettingImg2.js');
+var autoImging = require('./fn/auto-getting-img.js');
+var test = require('./test/test6.js');
 var users = require('./routes/users');
 var settings = require('./settings');
 var flash = require('connect-flash');
 var multer = require('multer');
 var app = express();
+
 
 // TEST
 // var test2 = require('./test2');
@@ -62,7 +63,7 @@ autoImging();
 
 
 // test
-// test2();
+// test();
 
 app.use('/users', users);
 app.use(express.static(path.join(__dirname, 'public')));

@@ -6,8 +6,6 @@ var Url  = require('../models/url.js');
 var autoTiming = require('../fn/autoTiming');
 var getTime = require('../fn/getTime.js');
 var getInfo = require('../fn/getImg.js');
-//test
-var urlArr = ['http://www.baidu.com'];
 
 module.exports = function (app) {
     app.get('/', function (req, res) {
@@ -28,6 +26,14 @@ module.exports = function (app) {
         })
 	})
 
+    app.get('/monitorImg', function (req, res) {
+        Url.getAll(function (err, docs) {
+            res.render('monitor-img', {
+                title: '图片尺寸监控',
+                urlArr: docs
+            })
+        })
+    })
     app.post('/api/saveUrl', function (req, res) {
         var url = req.body.url;
         var urlObj = new Url(url);

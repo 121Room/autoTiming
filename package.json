@@ -31,5 +31,12 @@
     "request": "^2.69.0",
     "serve-favicon": "~2.3.0",
     "webpack": "^1.12.6"
+  },
+  "devDependencies": {
+    "cheerio": "^0.20.0",
+    "iconv-lite": "^0.4.13",
+    "node-xlsx": "^0.6.0",
+    "superagent": "^1.8.3",
+    "url": "^0.11.0"
   }
 }

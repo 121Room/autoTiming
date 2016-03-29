@@ -3,9 +3,13 @@
 
 {{each list}}
 <p>
-	这个地址:{{$value.url}}，有{{$value.imageCount.length}}个图片超过了应有的尺寸。为：
+	这个地址：{{$value.url}} </br>
+	共检测：{{$value.length}}张图片</br>
+	检测环境：<span style="color: green">{{$value.urlType}}</span></br>
+	图片尺寸上线：{{$value.maxSize}}kb</br>
+	有<span style="color: red">{{$value.imageCount.length}}</span>个图片超过了应有的尺寸。为：
 	{{each $value.imageCount}}
-		<p>{{$value}}</p>
+		<p>{{$value.url}}<span>&nbsp;&nbsp;&nbsp;{{$value.size}}kb</span></p>
 	{{/each}}
 </p> 
 </br>

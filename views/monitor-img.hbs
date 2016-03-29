@@ -1,0 +1,50 @@
+<link rel="stylesheet" type="text/css" href="dist/assets/css/monitor-img.css">
+
+
+<h1>地址管理</h1>
+<hr>
+<div class="j_UrlBox url-box">
+	{{#each urlArr}}
+		<div class="j_Url url-status">
+		  <span class="j_ValueUrl url-value">{{url}}</span>
+		  <input class="j_FixUrl" type="submit" value="修改">
+		  <input class="j_DeleteUrl" type="submit" value="删除">
+		</div>
+	{{/each}}
+</div>
+
+
+
+<input class="j_AddUrl" type="submit" value="添加新的地址">
+
+<script id="J_TempUrlEdit" type="text/html">
+	<div class="j_Url url-status">
+		<input class="url-input j_UrlInput" data-origin="\{{origin}}" type="text" value='\{{valueUrl}}' placeholder="请输入网址">
+		<input class="j_SaveUrl" type="submit" data-status='\{{status}}' value="保存">
+		<input class="j_Cancel" type="submit" data-status='\{{status}}' value="取消">	
+	</div>
+</script>
+<script id="J_TempUrlFix" type="text/html">
+	<span class="j_ValueUrl url-value">\{{valueUrl}}</span>
+	<input class="j_FixUrl" type="submit" value="修改">
+	<input class="j_DeleteUrl" type="submit" value="删除">
+</script>
+<script id="J_TempDataComplete" type="text/html">
+	\{{each data}}
+		<ul class="row">
+			<li class="col area-url">\{{$value.url}}</li>
+			<li class="col area-status">load时间:</li>
+			<li class="col area-data">\{{$value.domComplete}}</li>
+		</ul>
+	\{{/each}}
+</script>
+<script id="J_TempDataInfo" type="text/html">
+	\{{each data}}
+		<ul class="row j_Row" data-imgs="\{{$value.imageCount.toString()}}">
+			<li class="col area-url">\{{$value.url}}</li>
+			<li class="col area-status">图片总数:\{{$value.length}}</li>
+			<li class="col area-data">超size数:\{{$value.imageCount.length}}</li>
+		</ul>
+	\{{/each}}
+</script>
+<script type="text/javascript" src="javascripts/monitor-img.js"></script>
