@@ -1,0 +1,27 @@
+{{!-- <link rel="stylesheet" type="text/css" href="dist/assets/css/performance.css"> --}}
+
+<table class="table table-striped">
+	<tr>
+		<th>来源</th>
+		<th>load时间</th>
+		<th>设备</th>
+		<th>浏览器</th>
+		<th>引擎</th>
+		<th>操作系统</th>
+		<th>屏幕宽</th>
+	</tr>
+	{{#each performanceArr}}
+	<tr>
+		<td>{{url}}</td>
+		<td>{{loadTime}}(ms)</td>
+		<td>{{device.type}}</td>
+		<td>{{browser.name}}</td>
+		<td>{{engine.name}}</td>
+		<td>{{os.name}}</td>
+		<td>{{resolution.width}}</td>
+	</tr>
+	{{/each}}
+</table>
+
+
+{{!-- <script type="text/javascript" src="javascripts/performance.js"></script> --}}

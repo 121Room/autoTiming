@@ -142,12 +142,7 @@
 		}
 		
 	}
-	function startWatch () {
-		// var timeValue = $runTimeSelect.val();
-		$watchForm[0].action = $(this).data('action');
-		console.log($watchForm[0].action);
-		$watchForm.submit();
-	}
+
 
 
 	$addUrl.on('click', function () {
@@ -180,8 +175,57 @@
 		deleteUrl.call(this);
 	})
 
+	var ImgPackage = function () {
+		this.emailHTML ='<div class="row j_EmailRow">'
+            				+'<div class="col-sm-4">'
+              					+'<input type="text" class="form-control" name="emailList" placeholder="nanyang@showjoy.com">'
+            				+'</div>'
+            				+'<div class="col-sm-4">'
+              					+'<input type="button" value="删除" class="j_DelEmail btn btn-danger">'
+            				+'</div>'
+          				+'</div>';
+		this.init = function () {
+			this.bindEvent();
+		}
+		this.bindEvent = function () {
+			var $body = $('body');
+			var $addEmail = $('.j_AddEmail');
+			var $delEmail = $('.j_DelEmail');
+			var $emailArea = $('.j_EmailArea');
+			var $configForm = $('.j_FormImgPackage');
+			var $submit = $('.j_Submit');
 
+			$addEmail.on('click', addEmail.bind(this));
+			$body.on('click', '.j_DelEmail', delEmail);
+			$configForm.on('submit', submitConfig);
 
+			function addEmail () {
+				$emailArea.append(this.emailHTML)
+			}
+			function delEmail () {
+				if ($('.j_DelEmail').length > 1) {
+					$(this).parents('.j_EmailRow').remove();
+				} else {
+					alert('至少一个收件人');
+				}
+			}
+			function submitConfig (e) {
+				e.preventDefault();
+				$(this).ajaxSubmit({
+					success: function (data) {
+						if (data.isSuccess) {
+							window.location.reload();
+						}
+					},
+					error: function (err) {
+						console.log(err)
+					}
+				})
+			}
+		}
+	}
+	var imgPackage = new ImgPackage();
+	imgPackage.init();
 
 })()
 

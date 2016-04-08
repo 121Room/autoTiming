@@ -1,4 +1,5 @@
 var Url = require('../models/url.js');
+var ImgConfig = require('../models/img-config.js');
 var phantom = require('phantom');
 var Promise = require('es6-promise').Promise;
 var utils = require('../util/utils.js');
@@ -23,7 +24,7 @@ var transporter = nodemailer.createTransport({
 //static
 function getPackageInfo() {
     return new Promise(function(resolve, reject) {
-        var URL_LIST = ['http://www.showjoy.com', 'http://m.showjoy.com'];
+        // var URL_LIST = ['http://www.showjoy.com', 'http://m.showjoy.com'];
         var urlPromise = new Promise (function (resolve, reject) {
             Url.getAll(function (err, arr) {
                 if (err) {
@@ -33,33 +34,40 @@ function getPackageInfo() {
                 }
             })
         })
-        var packagePromise = new Promise (function (resolve, reject) {
-            ImgPackage.getAll(function (err, obj) {
+        var imgConfigPromise = new Promise (function (resolve, reject) {
+            ImgConfig.getAll(function (err, docs) {
                 if (err) {
                     reject(new Error(err));
                 } else {
-                    resolve(obj)
+                    resolve(docs[docs.length - 1])
                 }
             })
         })
-        var MAX_SIZE = {
-            h5: 150,
-            pc: 300
-        };
-        var TIME_DIFF = 1000 * 60 * 60 * 3;
-        var MAIL_OPTION = {
-            from: settingConfig.emailFrom, // sender address
-            to: settingConfig.emailTo, // list of receivers
-            subject: '有图片尺寸超标啦 ✔', // Subject line
-            text: '有图片尺寸超标啦 ✔', // plaintext body
-            html: '<b>Hello world ✔</b>' // html body
-        };
-        resolve({
-            URL_LIST: URL_LIST,
-            MAX_SIZE: MAX_SIZE,
-            TIME_DIFF: TIME_DIFF,
-            MAIL_OPTION: MAIL_OPTION
+        
+        Promise.all([urlPromise, imgConfigPromise]).then(function (result) {
+            var urlArr = [];
+            result[0].forEach(function (item) {
+                urlArr.push(item.url);
+            })
+            var MAX_SIZE = {
+                h5: parseInt(result[1].configJson.h5size),
+                pc: parseInt(result[1].configJson.pcsize)
+            };
+            var MAIL_OPTION = {
+                from: settingConfig.emailFrom, // sender address
+                to: result[1].configJson.emailList.toString(), // list of receivers
+                subject: '有图片尺寸超标啦 ✔', // Subject line
+                text: '有图片尺寸超标啦 ✔', // plaintext body
+                html: '<b>Hello world ✔</b>' // html body
+            };
+            resolve({
+                URL_LIST: urlArr,
+                MAX_SIZE: MAX_SIZE,
+                MAIL_OPTION: MAIL_OPTION
+            });
         });
+        
+        
     })
 }
 
@@ -156,7 +164,7 @@ function autoGettingImg() {
                         page.open(url).then(function(status) {
                             if (status == 'success') {
                                 page.evaluate(function() {
-                                    return document.getElementById('layout').innerHTML;
+                                    return document.getElementsByTagName('body')[0].innerHTML;
                                 }).then(function(content) {
                                     ph.exit();
                                     resolve(content);
@@ -171,7 +179,9 @@ function autoGettingImg() {
             var urlInfo = [];
             var index = 0;
 
-            getPackageInfo().then(function(infoObj) {
+            getPackageInfo()
+            .then(function (infoObj) {
+                
 
                 function checkLast() {
                     return index === arrList.length;
@@ -201,6 +211,7 @@ function autoGettingImg() {
                             maxSize: maxSizeObj[utils.judgeRequestType(item)],
                             urlType: utils.judgeRequestType(item)
                         })
+                        console.log(urlInfo)
                         if (checkLast()) {
                             if (utils.hasOverSize(urlInfo)) {
                                 var data = {};
@@ -221,6 +232,9 @@ function autoGettingImg() {
                         }
                     })
                 })
+            })
+            .catch(function (err) {
+                console.log(err);
             })
         })
     }

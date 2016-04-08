@@ -17,13 +17,13 @@ var pool = poolModule.Pool({
   log      : true
 });
 
-function ImgPackage(url) {
-	this.url = url;
+function Performance(json) {
+	this.performance = json;
 }
 
-module.exports = ImgPackage;
+module.exports = Performance;
 
-ImgPackage.prototype.save = function (callback) {
+Performance.prototype.save = function (callback) {
 	var self = this;
 	var date = new Date();
 	//存储各种事件格式，方便以后拓展
@@ -35,8 +35,8 @@ ImgPackage.prototype.save = function (callback) {
 		minute: date.getFullYear() + '-' +( date.getMonth() + 1 ) + '-' + date.getDate() + ' ' + date.getHours() + ':' + ( date.getMinutes() < 10 ? '0' + date.getMinutes() : date.getMinutes() )
 	}
 	//要存入数据库的时间
-	var url = {
-		url: self.url
+	var json = {
+		configJson: self.config
 	}
 	//打开数据库
 	pool.acquire(function (err, db) {
@@ -44,31 +44,31 @@ ImgPackage.prototype.save = function (callback) {
 			return callback(err);
 		}
 		//读取times的集合
-		db.collection('urls', function (err, collection) {
+		db.collection('performances', function (err, collection) {
 			if (err) {
 				pool.release(db);
 				return callback(err);
 			}
-			collection.insert(url, {
+			collection.insert(self.performance, {
 				safe: true
-			}, function (err, url) {
+			}, function (err, json) {
 				pool.release(db);
 				if (err) {
 					return callback(err);
 				}
 				if (typeof callback === 'function') {
-					callback(null, url);
+					callback(null, json);
 				}
 			})
 		})
 	})
 }
-ImgPackage.getAll = function(callback) {
+Performance.getAll = function(callback) {
 	pool.acquire(function (err, db) {
 		if (err) {
 			return callback(err);
 		}
-		db.collection('urls', function (err, collection) {
+		db.collection('performances', function (err, collection) {
 			if (err) {
 				pool.release(db);
 				return callback(err);
@@ -79,28 +79,6 @@ ImgPackage.getAll = function(callback) {
 					return callback(err);
 				}
 				callback(null, docs)
-			})
-		})
-	})
-}
-ImgPackage.del = function (url, callback) {
-	pool.acquire(function (err, db) {
-		if (err) {
-			return callback(err);
-		}
-		db.collection('urls', function (err, collection) {
-			if (err) {
-				pool.release(db);
-				return callback(err);
-			}
-			collection.remove({
-				"url": url
-			}, function (err) {
-				pool.release(db);
-				if (err) {
-					return callback(err);
-				}
-				callback(null);
 			})
 		})
 	})

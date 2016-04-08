@@ -15,8 +15,9 @@ var users = require('./routes/users');
 var settings = require('./settings');
 var flash = require('connect-flash');
 var multer = require('multer');
+var hbs = require('hbs');
+var swag = require('swag');
 var app = express();
-
 
 // TEST
 // var test2 = require('./test2');
@@ -24,7 +25,7 @@ var app = express();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
-
+swag.registerHelpers(hbs);
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(flash());

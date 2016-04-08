@@ -30,10 +30,12 @@
     "phantomas": "^1.13.0",
     "request": "^2.69.0",
     "serve-favicon": "~2.3.0",
+    "swag": "^0.7.0",
     "webpack": "^1.12.6"
   },
   "devDependencies": {
     "cheerio": "^0.20.0",
+    "eventproxy": "^0.3.4",
     "iconv-lite": "^0.4.13",
     "node-xlsx": "^0.6.0",
     "superagent": "^1.8.3",

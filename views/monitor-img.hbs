@@ -1,21 +1,75 @@
 <link rel="stylesheet" type="text/css" href="dist/assets/css/monitor-img.css">
 
+<div>
 
-<h1>地址管理</h1>
-<hr>
-<div class="j_UrlBox url-box">
-	{{#each urlArr}}
-		<div class="j_Url url-status">
-		  <span class="j_ValueUrl url-value">{{url}}</span>
-		  <input class="j_FixUrl" type="submit" value="修改">
-		  <input class="j_DeleteUrl" type="submit" value="删除">
+  <!-- Nav tabs -->
+  <ul class="nav nav-tabs" role="tablist">
+    <li role="presentation" class="active"><a href="#adress" aria-controls="home" role="tab" data-toggle="tab">监控网址管理</a></li>
+    <li role="presentation"><a href="#package" aria-controls="profile" role="tab" data-toggle="tab">图片配置项</a></li>
+  </ul>
+
+  <!-- Tab panes -->
+  <div class="tab-content">
+    <div role="tabpanel" class="tab-pane active" id="adress">
+    	<h1>地址管理</h1>
+		<hr>
+		<div class="j_UrlBox url-box">
+			{{#each urlArr}}
+				<div class="j_Url url-status">
+				  <span class="j_ValueUrl url-value">{{url}}</span>
+				  <input class="j_FixUrl" type="submit" value="修改">
+				  <input class="j_DeleteUrl" type="submit" value="删除">
+				</div>
+			{{/each}}
 		</div>
-	{{/each}}
+
+		<input class="j_AddUrl" type="submit" value="添加新的地址">
+    </div>
+    <div role="tabpanel" class="tab-pane" id="package">
+    	<form class="form-horizontal main-from j_FormImgPackage" method="post" action="/api/saveImgConfig">
+			  <div class="form-group">
+			    <label for="h5size" class="col-sm-2 control-label">H5图片尺寸上限</label>
+			    <div class="col-sm-3">
+			      <input name="h5size" type="text" class="form-control" id="h5size" placeholder="单位kb" value="{{configJson.configJson.h5size}}">
+			    </div>
+			  </div>
+			  <div class="form-group">
+			    <label for="pcsize" class="col-sm-2 control-label">PC图片尺寸上限</label>
+			    <div class="col-sm-3">
+			      <input type="text" name="pcsize" class="form-control" id="pcsize" placeholder="单位kb" value="{{configJson.configJson.pcsize}}">
+			    </div>
+			  </div>
+        <div class="form-group">
+          <label for="pcsize" class="col-sm-2 control-label">收件人列表</label>
+        </div>
+        <div class="col-sm-offset-2 email-area j_EmailArea">
+          {{#each configJson.configJson.emailList}}
+          <div class="row j_EmailRow">
+            <div class="col-sm-4">
+            	<input type="text" name="emailList" class="form-control" placeholder="nanyang@showjoy.com" value="{{this}}">
+            </div>
+            <div class="col-sm-4">
+            	<input type="button" value="删除" class="j_DelEmail btn btn-danger">
+            </div>
+          </div>
+          {{/each}}
+        </div>
+        <div class="form-group">
+          <div class="col-sm-offset-2 col-sm-10">
+            <input type="button" value="新增收件人" class="j_AddEmail btn btn-default">
+          </div>
+        </div>
+			  <div class="form-group">
+			    <div class="col-sm-offset-2 col-sm-10">
+			      <button type="submit" class="btn btn-default j_Submit">保存配置</button>
+			    </div>
+			  </div>
+			</form>
+    </div>
+  </div>
+
 </div>
 
-
-
-<input class="j_AddUrl" type="submit" value="添加新的地址">
 
 <script id="J_TempUrlEdit" type="text/html">
 	<div class="j_Url url-status">
@@ -47,4 +101,7 @@
 		</ul>
 	\{{/each}}
 </script>
+
+
+<script type="text/javascript" src="lib/jquery.form.js"></script>
 <script type="text/javascript" src="javascripts/monitor-img.js"></script>

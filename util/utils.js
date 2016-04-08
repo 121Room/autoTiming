@@ -17,8 +17,8 @@ var utils = {
   },
   getImgFilePath: function(name){
     var home = process.env[(process.platform == 'win32') ? 'USERPROFILE' : 'HOME'];
-    var name = (name == undefined) ? '' : name;
-    var imgBaseRoot = path.join(home,'imgfile' + name);
+    var name = (name == undefined) ? 'test' : name;
+    var imgBaseRoot = path.join(home, name);
     // var imgBase = path.join(imgBaseRoot, 'file')
     return imgBaseRoot;
   },

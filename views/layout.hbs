@@ -18,9 +18,9 @@
       <div class="row">
         <div class="col-md-3">
           <ul class="nav nav-pills nav-stacked">
-            <li role="presentation" class="active"><a href="/">首页</a></li>
-            <li role="presentation"><a href="/monitorImg">图片尺寸监控</a></li>
-            <li role="presentation"><a href="#">性能收集</a></li>
+            <li role="presentation" {{#is pageName 'homePage'}} class="active" {{/is}}><a href="/">首页</a></li>
+            <li role="presentation" {{#is pageName 'monitorImg'}} class="active" {{/is}}><a href="/monitorImg">图片尺寸监控</a></li>
+            <li role="presentation" {{#is pageName 'performance'}} class="active" {{/is}}><a href="/performance">真实性能收集</a></li>
           </ul>
         </div>
         <div class="col-md-9">{{{body}}}</div>
